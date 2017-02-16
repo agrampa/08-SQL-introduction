@@ -94,7 +94,7 @@ Article.fetchAll = function(callback) {
           })
         })
         // DONE: describe what the following code is doing
-        // this line is calling the fetchAll method which is making sure the functions run in the correct asynchronous order. The is going to initialize the articleView.initIndexPage in index.html
+        // this line is calling the fetchAll method which is making sure the functions run in the correct asynchronous order. The is going to initialize the articleView.initIndexPage in index.html, so there will be data in the database. Then it calls the fetchAll again so it can go through the if/else statement again, meeting the 'if' conditions this time
         .then(function() {
           Article.fetchAll(callback);
         })
@@ -118,7 +118,7 @@ Article.fetchAll = function(callback) {
  * - Outputs: nothing is actually being sent out when the table is truncated, but the result of this function is loading the page again with the table information completely removed
  */
 Article.truncateTable = function(callback) {
-  // TODO: describe what the following code is doing
+  // DONE: describe what the following code is doing
   // this is an ajax request which is sending a request to the filepath of /articles and using the method of DELETE, which is going to remove all of the data from the table
   $.ajax({
     url: '/articles',
@@ -155,21 +155,22 @@ Article.prototype.insertRecord = function(callback) {
 
 // ++++++++++++++++++++++++++++++++++++++
 
-// TODO
+// DONE
 /**
  * OVERVIEW of
- * - Describe what the method does
- * - Inputs: identify any inputs and their source
- * - Outputs: identify any outputs and their destination
+ * - overall, this method is going to remove an article from the table
+ * - it takes in the argument of "callback" and the ajax call takes in the specific article based on the aticle_id
+ * - Outputs: the output is the removal of the article, it does not have an actual destination but will no longer be included in the database
  */
 Article.prototype.deleteRecord = function(callback) {
-  // TODO: describe what the following code is doing
-  // this is another ajax request. it is going to specific
+  // DONE: describe what the following code is doing
+  // this is another ajax request. it is going to specifically look at the article_id that was created when the table was initialized with sql in the server.js file. The method called on the specific article is going to delete it, removing it from the table
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'DELETE'
   })
-  // TODO: describe what the following code is doing
+  // DONE: describe what the following code is doing
+  // after the article is deleted, the callback function will be called to initialize the page again without the article that was deleted.
   .then(function(data) {
     console.log(data);
     if (callback) callback();
@@ -178,19 +179,21 @@ Article.prototype.deleteRecord = function(callback) {
 
 // ++++++++++++++++++++++++++++++++++++++
 
-// TODO
+// DONE
 /**
  * OVERVIEW of
- * - Describe what the method does
- * - Inputs: identify any inputs and their source
- * - Outputs: identify any outputs and their destination
+ * - This method is updating a record in the database. It will take in the data that is provided and insert it into the table by referencing the original Article constructor
+ * - Inputs: this function takes in the "callback" artument. the data portion of the ajax call takes in specific input for the new article information
+ * - Outputs: the output is that an article is updated, so the details are changed
  */
 Article.prototype.updateRecord = function(callback) {
-  // TODO: describe what the following code is doing
+  // DONE: describe what the following code is doing
+  // this method has an ajax call that is going to look at the specific filepath for the article in question. The method is "PUT" which means that the article is going to be inserted into the table and included in the database
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'PUT',
-    data: {  // TODO: describe what this object is doing
+    data: {  // DONE: describe what this object is doing
+      // this object is taking in the information for the data and adding it as a new instance. For example, when a new article is added (presumably from the new article page), the information put in will be added as a new Article and therefore be added to the table/database
       author: this.author,
       authorUrl: this.authorUrl,
       body: this.body,
@@ -199,7 +202,8 @@ Article.prototype.updateRecord = function(callback) {
       title: this.title
     }
   })
-  // TODO: describe what the following code is doing
+  // DONE: describe what the following code is doing
+  // after the article is inserted, the callback function will be called to initialize the page again with the article that was inserted.
   .then(function(data) {
     console.log(data);
     if (callback) callback();

@@ -56,7 +56,7 @@ Article.loadAll = function(rows) {
 
   // DONE: describe what the following code is doing
   // this method on rows is a function that takes in ele as the argument. It is going to take each instance of an Article and push it into the Article.all array.
-  rows.forEach(function(ele) {
+  rows.forEach(function(ele) { //ele refers to the "elements" within an array
     Article.all.push(new Article(ele));
   })
 };
@@ -96,10 +96,10 @@ Article.fetchAll = function(callback) {
         // DONE: describe what the following code is doing
         // this line is calling the fetchAll method which is making sure the functions run in the correct asynchronous order. The is going to initialize the articleView.initIndexPage in index.html, so there will be data in the database. Then it calls the fetchAll again so it can go through the if/else statement again, meeting the 'if' conditions this time
         .then(function() {
-          Article.fetchAll(callback);
+          Article.fetchAll(callback); //fetchAll keeps calling itself until there are is no more data to be added to the database
         })
         // DONE: describe what the following code is doing
-        // .catch is a method that runs with the .then method fails. in this case, it is a function that takes in the argument "err" and results in a console message. because it is .error and not .log it will be displayed as an error message in red text with a pink background instead of a plain old console.log message
+        // .catch is a method that runs when the .then method fails. in this case, it is a function that takes in the argument "err" and results in a console message. because it is .error and not .log it will be displayed as an error message in red text with a pink background instead of a plain old console.log message
         .catch(function(err) {
           console.error(err);
         });
@@ -114,12 +114,12 @@ Article.fetchAll = function(callback) {
 /**
  * OVERVIEW of
  * - The purpose of this method is to truncate the table by removing all of the data from the /articles filepath
- * - Like the fetchAll method, this also takes in callback as the argument to initialize the page
+ * - Like the fetchAll method, this also takes in callback as the argument to initialize the page when callback is called --> callback()
  * - Outputs: nothing is actually being sent out when the table is truncated, but the result of this function is loading the page again with the table information completely removed
  */
 Article.truncateTable = function(callback) {
   // DONE: describe what the following code is doing
-  // this is an ajax request which is sending a request to the filepath of /articles and using the method of DELETE, which is going to remove all of the data from the table
+  // this is an ajax request which is sending a request to the filepath of /articles and using the method of DELETE, which is going to remove all of the data from the table. The method of DELETE references app.delete in server.js
   $.ajax({
     url: '/articles',
     method: 'DELETE',
@@ -164,7 +164,7 @@ Article.prototype.insertRecord = function(callback) {
  */
 Article.prototype.deleteRecord = function(callback) {
   // DONE: describe what the following code is doing
-  // this is another ajax request. it is going to specifically look at the article_id that was created when the table was initialized with sql in the server.js file. The method called on the specific article is going to delete it, removing it from the table
+  // this is another ajax request. it is going to specifically look at the article_id that was created when the table was initialized with sql in the server.js file. The method called on the specific article is going to delete it, removing it from the table. The method of DELETE references app.delete in server.js
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'DELETE'
@@ -188,7 +188,7 @@ Article.prototype.deleteRecord = function(callback) {
  */
 Article.prototype.updateRecord = function(callback) {
   // DONE: describe what the following code is doing
-  // this method has an ajax call that is going to look at the specific filepath for the article in question. The method is "PUT" which means that the article is going to be inserted into the table and included in the database
+  // this method has an ajax call that is going to look at the specific filepath for the article in question. The method is "PUT" which means that the article is going to be inserted into the table and included in the database. The method of PUT references app.put in server.js
   $.ajax({
     url: `/articles/${this.article_id}`,
     method: 'PUT',

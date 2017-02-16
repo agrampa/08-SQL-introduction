@@ -1,18 +1,18 @@
 'use strict';
-// TODO: Install and require the node postgres package into your server.js, and ensure that it's now a new dependency in your package.json
-// const pg = require('pg');
-const express = require('express');
+// DONE: Install and require the node postgres package into your server.js, and ensure that it's now a new dependency in your package.json
+const pg = require('pg'); //dependency
+const express = require('express'); //dependency
 // REVIEW: Require in body-parser for post requests in our server
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser'); //dependency
 const PORT = process.env.PORT || 3000;
 const app = express();
-// TODO: Complete the connection string for the url that will connect to your local postgres database
+// DONE: Complete the connection string for the url that will connect to your local postgres database
 // Windows and Linux users; You should have retained the user/pw from the pre-work for this course.
 // Your url may require that it's composed of additional information including user and password7
 // NOTE: Students will have varying URLs depending on their OS
-// const conString = 'postgres://localhost:5432';
+const conString = 'postgres://localhost:5432'; //set up connection string
 // REVIEW: Pass the conString to pg, which creates a new client object
-const client = new pg.Client(conString);
+const client = new pg.Client(conString);  //create const named client and assign it to a new pg.Client contstructor and assign it to the postgres DB through port 5432
 // REVIEW: Use the client object to connect to our DB.
 client.connect();
 
@@ -33,7 +33,7 @@ app.get('/new', function(request, response) {
 
 // NOTE: Routes for making API calls to enact CRUD Operations on our database
 app.get('/articles', function(request, response) {
-  client.query(`
+  client.query(`    
     CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
@@ -42,7 +42,7 @@ app.get('/articles', function(request, response) {
       category VARCHAR(20),
       "publishedOn" DATE,
       body TEXT NOT NULL);`
-  )
+  )  //template literal, though it's not really needed here bc there are no vars to concat.
   client.query('SELECT * FROM articles', function(err, result) { // Make a request to the DB
     if (err) console.error(err);
     response.send(result.rows);
@@ -52,9 +52,10 @@ app.get('/articles', function(request, response) {
 app.post('/articles', function(request, response) {
   client.query(
     `INSERT INTO
-    articles(title, author, "authorUrl", category, "publishedOn", body)
-    VALUES ($1, $2, $3, $4, $5, $6);
+    articles(title, author, "authorUrl", category, "publishedOn", body)  
+    VALUES ($1, $2, $3, $4, $5, $6); 
     `, // DONE: (above) Write the SQL query to insert a new record
+    // use double quotes on line 55 when enclosing anything written in camelCase
     [
       request.body.title,
       request.body.author,
